@@ -1,9 +1,23 @@
-import { Sequelize } from "sequelize-typescript";
+import { Sequelize, SequelizeOptions } from "sequelize-typescript";
 import "dotenv/config";
 
-const { DB_NAME, DB_OWNER_NAME, DB_PASSWORD } = process.env;
+const { DB_HOST, DB_NAME, DB_USER_NAME, DB_PASS } = process.env;
 
-export const sequelize = new Sequelize(DB_NAME!, DB_OWNER_NAME!, DB_PASSWORD!, {
-    host: "localhost",
+const sequelizeOptions: SequelizeOptions = {
+    host: DB_HOST!,
+    port: 5432,
     dialect: "postgres",
-});
+    dialectOptions: {
+        ssl: {
+            require: true,
+            rejectUnauthorized: false,
+        },
+    },
+};
+
+export const sequelize = new Sequelize(
+    DB_NAME!,
+    DB_USER_NAME!,
+    DB_PASS!,
+    sequelizeOptions
+);
