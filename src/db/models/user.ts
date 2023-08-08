@@ -5,6 +5,7 @@ import { Model } from "sequelize-typescript";
 type UserModel = {
     email: string;
     password: string;
+    activationToken: string | null;
 } & Model;
 
 export const UserModel = conection.define<UserModel>("User", {
@@ -14,6 +15,10 @@ export const UserModel = conection.define<UserModel>("User", {
         allowNull: false,
     },
     password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    activationToken: {
         type: DataTypes.STRING,
         allowNull: false,
     },

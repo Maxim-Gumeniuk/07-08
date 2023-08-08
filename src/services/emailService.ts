@@ -30,7 +30,7 @@ export const sendActivationLink = (email: string, token: string) => {
         email,
         subject: "Account activation",
         html: `
-        <h1>Account sctivation</h1>
+        <h1>Account activation</h1>
         <a href="${link}">${link}</a>`,
     });
 };
