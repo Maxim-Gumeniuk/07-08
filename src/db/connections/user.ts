@@ -9,7 +9,7 @@ const sequelizeOptions: SequelizeOptions = {
     dialect: "postgres",
     dialectOptions: {
         ssl: {
-            require: true,
+            require: false,
             rejectUnauthorized: false,
         },
     },
