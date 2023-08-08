@@ -15,7 +15,7 @@ pids
 
 # dotenv environment variable file
 .env
-
+.env.develop
 # Build files
 dist/
 
