@@ -19,7 +19,7 @@ app.use(registrationRoute);
 const start = async (): Promise<void> => {
     try {
         app.listen(PORT, () => {
-            console.log("Server started on port 3000");
+            console.log("Server started");
         });
 
         conection.sync().then(() => {

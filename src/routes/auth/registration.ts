@@ -4,7 +4,7 @@ import { registrationController } from "@/controllers/auth/registration";
 
 export const registrationRoute = express.Router();
 
-registrationRoute.post(Auth.registraion, registrationController.registr);
+registrationRoute.post(Auth.registration, registrationController.registr);
 registrationRoute.get(
     `${Auth.activation}/:activationToken`,
     registrationController.activate

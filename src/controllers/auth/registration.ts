@@ -5,11 +5,15 @@ import { emailService } from "@/services/emailService";
 import { Statuses } from "@/types/enums/statuses";
 
 const registr = (req: Request, res: Response) => {
-    const { email, password } = req.body;
-    const activationToken = uuidv4();
-    const user = UserModel.create({ email, password, activationToken });
-    emailService.sendActivationLink(email, activationToken);
-    res.send(user);
+    try {
+        const { email, password } = req.body;
+        const activationToken = uuidv4();
+        const user = UserModel.create({ email, password, activationToken });
+        emailService.sendActivationLink(email, activationToken);
+        res.send(user);
+    } catch (e) {
+        console.log(e);
+    }
 };
 
 const activate = async (req: Request, res: Response) => {
