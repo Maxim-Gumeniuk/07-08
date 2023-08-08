@@ -18,7 +18,7 @@ const activate = async (req: Request, res: Response) => {
     const user = await UserModel.findOne({ where: { activationToken } });
 
     if (!user) {
-        res.sendStatus(201);
+        res.sendStatus(Statuses.Not_found);
         return;
     }
 
