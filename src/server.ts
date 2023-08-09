@@ -3,6 +3,7 @@ import { sequelize as conection } from "@/db/connections/user";
 import { registrationRoute } from "@/routes/auth/registration";
 import cors from "cors";
 import "dotenv/config";
+import { loginRoute } from "./routes/auth/login";
 
 const { PORT = 5010, CORS_ORIGIN } = process.env;
 const app = express();
@@ -15,6 +16,7 @@ app.use(
 );
 app.use(express.json());
 app.use(registrationRoute);
+app.use(loginRoute);
 
 const start = async (): Promise<void> => {
     try {

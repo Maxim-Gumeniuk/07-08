@@ -1,14 +1,8 @@
 import { DataTypes } from "sequelize";
 import { sequelize as conection } from "@/db/connections/user";
-import { Model } from "sequelize-typescript";
+import { UserModelType } from "@/types/userModel";
 
-type UserModel = {
-    email: string;
-    password: string;
-    activationToken: string | null;
-} & Model;
-
-export const UserModel = conection.define<UserModel>("User", {
+export const UserModel = conection.define<UserModelType>("User", {
     email: {
         primaryKey: true,
         type: DataTypes.STRING,
