@@ -4,19 +4,33 @@ import { registrationRoute } from "@/routes/auth/registration";
 import cors from "cors";
 import "dotenv/config";
 import { loginRoute } from "./routes/auth/login";
+import { errorMiddleWare } from "./middlewares/errorMiddleware";
 
 const { PORT = 5010, CORS_ORIGIN } = process.env;
 const app = express();
 
-app.use(
-    cors({
-        origin: CORS_ORIGIN,
-        credentials: true,
-    })
-);
-app.use(express.json());
-app.use(registrationRoute);
-app.use(loginRoute);
+const appUseArray = [
+    {
+        value: cors({
+            origin: CORS_ORIGIN,
+            credentials: true,
+        }),
+    },
+    {
+        value: express.json(),
+    },
+    {
+        value: registrationRoute,
+    },
+    {
+        value: loginRoute,
+    },
+    {
+        value: errorMiddleWare,
+    },
+];
+
+appUseArray.forEach(({ value }) => app.use(value));
 
 const start = async (): Promise<void> => {
     try {

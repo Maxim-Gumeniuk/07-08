@@ -2,28 +2,34 @@ import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 import { UserModel } from "@/db/models/user";
 import { emailService } from "@/services/emailService";
-import { Statuses } from "@/types/enums/statuses";
+import { ApiError } from "@/exeptions/ApiError";
+import { getByEmail } from "@/services/userService";
 
-const registr = (req: Request, res: Response) => {
-    try {
-        const { email, password } = req.body;
-        const activationToken = uuidv4();
-        const user = UserModel.create({ email, password, activationToken });
-        emailService.sendActivationLink(email, activationToken);
-        res.send(user);
-    } catch (e) {
-        console.log(e);
+const registr = async (req: Request, res: Response) => {
+    const { email, password } = req.body;
+    const activationToken = uuidv4();
+    const existenUser = await getByEmail(email);
+
+    if (existenUser) {
+        throw ApiError.BadRequest("user exist");
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const user = await UserModel.create({
+        email,
+        password,
+        activationToken,
+    });
+    emailService.sendActivationLink(email, activationToken);
+    res.send({ message: "OK" });
 };
 
-const activate = async (req: Request, res: Response) => {
+const activate = async (req: Request) => {
     const { activationToken } = req.params;
 
     const user = await UserModel.findOne({ where: { activationToken } });
 
     if (!user) {
-        res.sendStatus(Statuses.Not_found);
-        return;
+        throw ApiError.NotFound("User Not Found");
     }
 
     user.activationToken = null;
