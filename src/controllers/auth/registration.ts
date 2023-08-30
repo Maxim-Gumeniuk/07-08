@@ -13,6 +13,7 @@ const registr = async (req: Request, res: Response) => {
     if (existenUser) {
         throw ApiError.BadRequest("user exist");
     }
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const user = await UserModel.create({
         email,

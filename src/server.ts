@@ -5,6 +5,7 @@ import cors from "cors";
 import "dotenv/config";
 import { loginRoute } from "./routes/auth/login";
 import { errorMiddleWare } from "./middlewares/errorMiddleware";
+import { validation } from "./validationSchema";
 
 const { PORT = 5010, CORS_ORIGIN } = process.env;
 const app = express();
@@ -28,9 +29,14 @@ const appUseArray = [
     {
         value: errorMiddleWare,
     },
+    {
+        value: validation.validateFunc,
+    },
 ];
 
-appUseArray.forEach(({ value }) => app.use(value));
+appUseArray.forEach(({ value }) => {
+    app.use(value);
+});
 
 const start = async (): Promise<void> => {
     try {
