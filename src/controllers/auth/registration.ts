@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import { UserModel } from "@/db/models/user";
 import { emailService } from "@/services/emailService";
@@ -13,11 +14,11 @@ const registr = async (req: Request, res: Response) => {
     if (existenUser) {
         throw ApiError.BadRequest("user exist");
     }
-
+    const hash = bcrypt.hash(password, 10);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const user = await UserModel.create({
         email,
-        password,
+        password: hash,
         activationToken,
     });
     emailService.sendActivationLink(email, activationToken);

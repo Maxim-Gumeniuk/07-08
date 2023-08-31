@@ -1,4 +1,5 @@
 import { ApiError } from "@/exeptions/ApiError";
+import bcrypt from "bcrypt";
 import { normalizeUser } from "@/helpers/normalizeUser";
 import { jwtService } from "@/services/jwtService";
 import { userService } from "@/services/userService";
@@ -8,7 +9,12 @@ const login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
     const user = await userService.getByEmail(email);
 
-    if (password !== user?.password) {
+    if (!user) {
+        throw ApiError.BadRequest("User with this email does not exist");
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password!);
+    if (isPasswordValid) {
         throw ApiError.BadRequest("Password is Wrong");
     }
     const normalUser = normalizeUser(user!);
